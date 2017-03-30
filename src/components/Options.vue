@@ -1,26 +1,22 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1> <br>
-    <select v-model="options" @change="change" multiple>
-        <option value="Python">Python</option>
-        <option value="Django">Django</option>
-        <option value="Flask">Flask</option>
-        <option value="Scrapy">Scrapy</option>
-        <option value="VueJs">VueJS</option>
-        <option value="ReactJS">ReactJS</option>
-        <option value="AsyncIO">AsyncIO</option>
-        <option value="BeautifulSoup">Beautiful Soup</option>
-        <option value="LXML">LXML</option>
-        <option value="Docker">Docker</option>
-        <option value="Vagrant">Vagrant</option>
-        <option value="Pandas">Pandas</option>
-        <option value="Numpy">Numpy</option>
-        <option value="MySQL">MySQL</option>
-        <option value="MsSQL">MsSQL</option>
-        <option value="PgSQL">PgSQL</option>
-        <option value="MongoDB">MongoDB</option>
-        <option value="CouchDB">CouchDB</option>
-    </select> <br>
+    <form>
+      <div class="multiselect">
+        <div class="selectBox" @click="showCheckboxes">
+          <select>
+            <option>Select an option</option>
+          </select>
+          <div class="overSelect"></div>
+        </div>
+        <div id="checkboxes">
+          <label v-for="label in labels">
+            <input type="checkbox" :value="label" v-model="options" /> {{ label }}
+          </label>
+        </div>
+      </div>
+    </form>
+
     <p>Selected options: {{ options }} </p>
     <br>
     <router-link to="/">Go back to root!</router-link>
@@ -33,12 +29,25 @@ export default {
   data () {
     return {
       msg: 'Welcome to the select dropdown page!',
-      options: []
+      options: [],
+      expanded: false,
+      labels: ['First', 'Second', 'Third']
     }
   },
   methods: {
       change () {
           console.log(this.options)
+      },
+
+      showCheckboxes() {
+        var checkboxes = document.getElementById("checkboxes");
+        if (!this.expanded) {
+          checkboxes.style.display = "block";
+          this.expanded = true;
+        } else {
+          checkboxes.style.display = "none";
+          this.expanded = false;
+        }
       }
   }
 }
@@ -63,4 +72,40 @@ li {
 a {
   color: #42b983;
 }
+
+.multiselect {
+  width: 200px;
+}
+
+.selectBox {
+  position: relative;
+}
+
+.selectBox select {
+  width: 100%;
+  font-weight: bold;
+}
+
+.overSelect {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+#checkboxes {
+  display: none;
+  border: 1px #dadada solid;
+}
+
+#checkboxes label {
+  display: block;
+}
+
+#checkboxes label:hover {
+  background-color: #1e90ff;
+}
+
+
 </style>
